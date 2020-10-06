@@ -109,7 +109,7 @@ void Genetics::printDNA() {
 }
 
 bool Genetics::operator<(Genetics& b) const{
-    if (this -> fitness < b.getFitness())
+    if (this -> fitness > b.getFitness())
         return true;
     else
         return false;

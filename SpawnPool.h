@@ -29,6 +29,7 @@ class SpawnPool{
 
     public:
         SpawnPool(std::vector<Box*> &stack, int population, size_t capacity);
+        void manageSpawn(std::vector<Genetics*> &children);
         void initPopulation();
         void printSpawns();
         void Dual(size_t rate);

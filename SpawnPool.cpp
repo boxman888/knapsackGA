@@ -5,6 +5,10 @@ SpawnPool::SpawnPool(std::vector<Box*> &stack, int population, size_t capacity) 
     this -> capacity = capacity;
 }
 
+static bool compareFitness(Genetics* a, Genetics *b) {
+    return (a->getFitness() > b -> getFitness());
+}
+
 int SpawnPool::Grade(Genetics* org) {
     int* gene = org -> getGenome();
     int score = 0;
@@ -58,8 +62,6 @@ void SpawnPool::Dual(size_t rate) {
         else
             winners.push_back(spawn[org1]);
     }
-    std::sort(winners.begin(), winners.end());
-    children.push_back(winners[0]); //Elitism, strongest moves to next generation.
 
     while (children.size() < population) {
         org1 = rand() % winners.size();
@@ -68,10 +70,23 @@ void SpawnPool::Dual(size_t rate) {
         Genetics* child = breed(winners[org1], winners[org2], org1 == org2);
         children.push_back(child);
     }
+    std::cout << "Old spawn size: " << spawn.size() <<std::endl;
 
-    spawn.swap(children);
-    winners.clear();
-    children.clear();
+    manageSpawn(children);
+    std::cout << "new spawn size: " << spawn.size() <<std::endl;
+}
+
+void SpawnPool::manageSpawn(std::vector<Genetics*> &children) {
+    for (size_t i = children.size(); i > 1; i--) {
+        Genetics* p = spawn[i];
+        delete p;
+        spawn.pop_back();
+    }
+
+    for (size_t i = spawn.size(); i < children.size(); i++){
+        spawn.push_back(children[i]);
+    }
+
 }
 
 Genetics* SpawnPool::breed(Genetics* org1, Genetics* org2, bool asexual) {
@@ -86,15 +101,18 @@ Genetics* SpawnPool::breed(Genetics* org1, Genetics* org2, bool asexual) {
 
 void SpawnPool::run(int generations) {
     initPopulation();
-    for (int i = 0; i < generations; i++)
-        Dual((size_t)ceil((float) population * 0.25));
-    sort(spawn.begin(), spawn.end());
+    sort(spawn.begin(), spawn.end(), compareFitness);
 
-    std::cout << "Best orginism score is: " << spawn[0] -> getFitness() << std::endl;
-    std::cout << "Orginism's DNA is: ";
-    int* dna = spawn[0] -> getGenome();
-    for (int i = 0; i < spawn[0] -> getGenomeSize(); i++) {
-        std::cout << dna[i] << " ";
+    for (int i = 0; i < generations; i++){
+        Dual((size_t)ceil((float) population * 0.25));
+        sort(spawn.begin(), spawn.end(), compareFitness);
+    
+        std::cout << "Best orginism score is: " << spawn[0] -> getFitness() << std::endl;
+        std::cout << "Orginism's DNA is: ";
+        int* dna = spawn[0] -> getGenome();
+        for (int i = 0; i < spawn[0] -> getGenomeSize(); i++) {
+            std::cout << dna[i] << " ";
+        }
+        std::cout << "\n" << std::endl;
     }
-    std::cout << "\n" << std::endl;
 }
