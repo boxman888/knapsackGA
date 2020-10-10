@@ -1,3 +1,9 @@
+/***********************************************
+* Created: 10/3/2020
+* Auther:  Ethan Patterson
+************************************************
+*
+************************************************/
 #include "SpawnPool.h"
 
 SpawnPool::SpawnPool(std::vector<Box*> &stack, int population, size_t capacity) : boxStack(stack) {

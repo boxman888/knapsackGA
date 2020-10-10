@@ -12,3 +12,4 @@ ${OBJS}: ${SRCS}
 
 clear:
 	rm -f *.o knapsackGA
+	rm -f *.gch

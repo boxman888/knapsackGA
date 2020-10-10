@@ -14,13 +14,21 @@
 
 class Box {
     private:
-        int value;
-        int weight;
+        int value; // Value of item.
+        int weight; // Weight of item.
 
     public:
+        /*
+        * Constructor for Box.
+        * @param value, value of item.
+        * @param weight, weight of item.
+        */
         Box(int value, int weight);
+        // Returns the value of the Box.
         int getValue();
+        // Returns the weight of a Box.
         int getWeight();
+        // Overload operator used for sorting.
         bool operator<(Box& b) const;
 };
 

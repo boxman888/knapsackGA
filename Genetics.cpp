@@ -1,3 +1,10 @@
+/***********************************************
+* Created: 10/3/2020
+* Auther:  Ethan Patterson
+************************************************
+* Handles the genetics of an orginism.
+* Modifies the anyting relating to DNA.
+************************************************/
 #include "Genetics.h"
 
 Genetics::Genetics(int size) {
