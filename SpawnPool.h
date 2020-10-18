@@ -33,7 +33,7 @@ class SpawnPool{
         void initPopulation();
         void printSpawns();
         void Dual(size_t rate);
-        void run(int generations);
+        int run(int generations);
 };
 
 #endif
